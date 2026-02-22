@@ -5,7 +5,7 @@ import type { ChatResponse } from "@chatpay/shared";
  */
 export async function handleHelp(): Promise<ChatResponse> {
   const message = [
-    "Hey! 👋 I'm *WattsPay* — send & receive crypto right here on WhatsApp. Zero gas fees.\n",
+    "Hey! 👋 I'm *Monad Pay* — send & receive crypto right here on WhatsApp. Zero gas fees.\n",
     "Here's what you can do:\n",
     "💸 *Send money* — _send 2 monad to rahul_",
     "💰 *Check balance* — _what's my balance?_",

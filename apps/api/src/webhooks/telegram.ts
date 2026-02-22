@@ -158,7 +158,7 @@ export async function sendTelegramMessage(
 async function sendTelegramContactRequest(chatId: string): Promise<void> {
   await telegramApi("sendMessage", {
     chat_id: chatId,
-    text: "📱 Welcome to ChatPay Monad!\n\nPlease share your phone number to get started.",
+    text: "📱 Welcome to Monad Pay!\n\nPlease share your phone number to get started.",
     reply_markup: {
       keyboard: [
         [

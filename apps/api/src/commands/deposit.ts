@@ -23,7 +23,7 @@ export async function handleDeposit(userId: string): Promise<ChatResponse> {
       `Your wallet address:\n\`${userAddress}\`\n`,
       `Payment Pool contract:\n\`${poolAddress}\`\n`,
       "To fund your sendable balance, send MON to the *pool contract* from your wallet (MetaMask, etc.)\n",
-      "Or just ask a friend to _send_ you MON through WattsPay — zero gas! ⚡",
+      "Or just ask a friend to _send_ you MON through Monad Pay — zero gas! ⚡",
     ].join("\n"),
   };
 }

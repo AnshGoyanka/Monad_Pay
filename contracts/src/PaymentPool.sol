@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 /**
  * @title PaymentPool
- * @notice Gasless P2P payment pool for ChatPay Monad.
+ * @notice Gasless P2P payment pool for Monad Pay.
  *         Users deposit MON into the pool. A trusted relayer executes
  *         transfers between users so they never pay gas.
  * @dev    Reentrancy protection via checks-effects-interactions pattern

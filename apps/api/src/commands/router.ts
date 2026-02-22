@@ -42,7 +42,7 @@ export async function routeCommand(msg: UnifiedMessage): Promise<ChatResponse> {
 
       return {
         message: [
-          "Hey! 👋 Welcome to *WattsPay* — your crypto wallet, right here in WhatsApp.\n",
+          "Hey! 👋 Welcome to *Monad Pay* — your crypto wallet, right here in WhatsApp.\n",
           "✅ Your wallet is ready. Zero gas fees on every payment.\n",
           "Before you can send money, pick a 4-digit PIN to secure your payments.\n",
           "Just type something like: *my pin is 1234*",

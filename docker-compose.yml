@@ -2,18 +2,18 @@ services:
   # ── PostgreSQL ──────────────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
-    container_name: chatpay-postgres
+    container_name: monadpay-postgres
     restart: unless-stopped
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: chatpay
-      POSTGRES_PASSWORD: chatpay_dev
-      POSTGRES_DB: chatpay_monad
+      POSTGRES_USER: monadpay
+      POSTGRES_PASSWORD: monadpay_dev
+      POSTGRES_DB: monad_pay
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U chatpay -d chatpay_monad"]
+      test: ["CMD-SHELL", "pg_isready -U monadpay -d monad_pay"]
       interval: 5s
       timeout: 3s
       retries: 5
@@ -21,7 +21,7 @@ services:
   # ── Redis ───────────────────────────────────────────────────────
   redis:
     image: redis:7-alpine
-    container_name: chatpay-redis
+    container_name: monadpay-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
