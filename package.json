@@ -1,0 +1,27 @@
+{
+  "name": "chatpay-monad",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Conversational gasless crypto payments on Monad",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "db:migrate": "cd apps/api && npx prisma migrate dev",
+    "db:generate": "cd apps/api && npx prisma generate",
+    "db:push": "cd apps/api && npx prisma db push"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "npm@10.0.0"
+}

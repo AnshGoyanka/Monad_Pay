@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ──────────────────────────── Users ─────────────────────────────
+
+enum Platform {
+  whatsapp
+  telegram
+}
+
+enum UserStatus {
+  new_user
+  active
+  suspended
+}
+
+model User {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  phoneHash    String     @unique @map("phone_hash") @db.VarChar(128)
+  phoneSalt    String     @map("phone_salt") @db.VarChar(64)
+  phoneLast4   String?    @map("phone_last4") @db.VarChar(4)
+  platform     Platform
+  platformId   String     @map("platform_id") @db.VarChar(128)
+  pinHash      String?    @map("pin_hash") @db.VarChar(128)
+  status       UserStatus @default(new_user)
+  dailyVolume  Decimal    @default(0) @map("daily_volume") @db.Decimal(18, 8)
+  dailyResetAt DateTime?  @map("daily_reset_at") @db.Timestamptz()
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt    DateTime   @updatedAt @map("updated_at") @db.Timestamptz()
+
+  wallet  Wallet?
+  sentTxs Transaction[] @relation("SentTransactions")
+  recvTxs Transaction[] @relation("ReceivedTransactions")
+  ownedContacts  Contact[] @relation("OwnedContacts")
+  linkedContacts Contact[] @relation("LinkedContacts")
+  auditLogs AuditLog[]
+
+  @@map("users")
+}
+
+// ──────────────────────────── Wallets ────────────────────────────
+
+model Wallet {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String   @unique @map("user_id") @db.Uuid
+  addressHash   String   @unique @map("address_hash") @db.VarChar(128)
+  addressEnc    Bytes    @map("address_enc")
+  addressIv     Bytes    @map("address_iv")
+  privateKeyEnc Bytes    @map("private_key_enc")
+  privateKeyIv  Bytes    @map("private_key_iv")
+  keyVersion    Int      @default(1) @map("key_version")
+  derivationIdx Int      @map("derivation_idx")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("wallets")
+}
+
+// ──────────────────────────── Transactions ───────────────────────
+
+enum TxType {
+  transfer
+  deposit
+  withdraw
+}
+
+enum TxStatus {
+  pending
+  confirmed
+  failed
+  expired
+}
+
+model Transaction {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  senderId       String   @map("sender_id") @db.Uuid
+  recipientId    String   @map("recipient_id") @db.Uuid
+  amount         Decimal  @db.Decimal(36, 18)
+  currency       String   @default("MON") @db.VarChar(10)
+  txType         TxType   @map("tx_type")
+  txHash         String?  @unique @map("tx_hash") @db.VarChar(66)
+  refId          String   @unique @map("ref_id") @db.VarChar(64)
+  status         TxStatus @default(pending)
+  gasUsed        BigInt?  @map("gas_used")
+  gasPrice       BigInt?  @map("gas_price")
+  blockNumber    BigInt?  @map("block_number")
+  errorMessage   String?  @map("error_message")
+  idempotencyKey String?  @unique @map("idempotency_key") @db.VarChar(128)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  confirmedAt    DateTime? @map("confirmed_at") @db.Timestamptz()
+
+  sender    User @relation("SentTransactions", fields: [senderId], references: [id])
+  recipient User @relation("ReceivedTransactions", fields: [recipientId], references: [id])
+
+  @@index([senderId, createdAt(sort: Desc)])
+  @@index([recipientId, createdAt(sort: Desc)])
+  @@index([status])
+  @@map("transactions")
+}
+
+// ──────────────────────────── Contacts ───────────────────────────
+
+model Contact {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ownerId       String   @map("owner_id") @db.Uuid
+  contactName   String   @map("contact_name") @db.VarChar(100)
+  contactUserId String?  @map("contact_user_id") @db.Uuid
+  phoneHash     String?  @map("phone_hash") @db.VarChar(128)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  owner       User  @relation("OwnedContacts", fields: [ownerId], references: [id], onDelete: Cascade)
+  contactUser User? @relation("LinkedContacts", fields: [contactUserId], references: [id])
+
+  @@unique([ownerId, contactName])
+  @@map("contacts")
+}
+
+// ──────────────────────────── Audit Log ──────────────────────────
+
+model AuditLog {
+  id        BigInt   @id @default(autoincrement())
+  userId    String   @map("user_id") @db.Uuid
+  action    String   @db.VarChar(50)
+  metadata  Json?    @db.JsonB
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("audit_log")
+}

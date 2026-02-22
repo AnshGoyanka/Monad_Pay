@@ -1,0 +1,43 @@
+# ── Dependencies ──
+node_modules/
+
+# ── Build output ──
+dist/
+out/
+.turbo/
+cache/
+
+# ── Secrets & Environment ──
+.env
+.env.*
+!.env.example
+apps/api/.env
+
+# ── Contracts build ──
+contracts/out/
+contracts/cache/
+
+# ── Logs ──
+*.log
+npm-debug.log*
+
+# ── Coverage & Testing ──
+coverage/
+.nyc_output/
+
+# ── OS files ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ──
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Prisma ──
+apps/api/prisma/migrations/
+
+# ── Scripts with sensitive data ──
+apps/api/scripts/deposit-for-user.ts

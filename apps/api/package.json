@@ -1,0 +1,39 @@
+{
+  "name": "@chatpay/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@chatpay/shared": "*",
+    "@fastify/rate-limit": "^10.2.0",
+    "@prisma/client": "^6.2.0",
+    "@scure/bip32": "^1.7.0",
+    "@scure/bip39": "^1.6.0",
+    "bcrypt": "^5.1.1",
+    "bullmq": "^5.30.0",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.0",
+    "ioredis": "^5.4.2",
+    "pino": "^9.6.0",
+    "tweetnacl": "^1.0.3",
+    "twilio": "^5.4.0",
+    "viem": "^2.22.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/node": "^22.10.0",
+    "prisma": "^6.2.0",
+    "rimraf": "^6.0.1",
+    "solc": "^0.8.34",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
