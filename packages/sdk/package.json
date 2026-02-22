@@ -1,0 +1,42 @@
+{
+  "name": "@monad-pay/sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for interacting with Monad Pay — gasless P2P payments on Monad",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "peerDependencies": {
+    "viem": "^2.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.0",
+    "viem": "^2.22.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "monad",
+    "payments",
+    "gasless",
+    "whatsapp",
+    "crypto",
+    "sdk",
+    "viem",
+    "evm"
+  ],
+  "license": "MIT"
+}
