@@ -7,7 +7,7 @@ import { prisma, disconnectDb } from "./config/database.js";
 import { redis, disconnectRedis } from "./config/redis.js";
 import { initRelayer, getRelayerAddress, isRelayerLowOnGas } from "./services/relayer.js";
 import { initNonce } from "./services/nonce.js";
-import { registerWhatsAppWebhook } from "./webhooks/whatsapp.js";
+import { registerWhatsAppWebhook, sendWhatsAppMessage } from "./webhooks/whatsapp.js";
 import { registerTelegramWebhook } from "./webhooks/telegram.js";
 import { createTxSubmitWorker } from "./queue/workers/txSubmitWorker.js";
 import { createTxConfirmWorker } from "./queue/workers/txConfirmWorker.js";
@@ -74,6 +74,37 @@ async function buildApp() {
       return reply.status(503).send({
         status: "unhealthy",
         error: error instanceof Error ? error.message : "Unknown",
+      });
+    }
+  });
+
+  // ── Temporary Debug Endpoint (remove after hackathon) ──
+  app.get("/debug/env", async (req, reply) => {
+    const mask = (s?: string) => s ? s.slice(0, 6) + "..." + s.slice(-4) : "NOT SET";
+    return reply.send({
+      TWILIO_ACCOUNT_SID: mask(env.TWILIO_ACCOUNT_SID),
+      TWILIO_AUTH_TOKEN: mask(env.TWILIO_AUTH_TOKEN),
+      TWILIO_WHATSAPP_NUMBER: env.TWILIO_WHATSAPP_NUMBER || "NOT SET",
+      PHONE_HASH_SALT: mask(env.PHONE_HASH_SALT),
+      MASTER_ENCRYPTION_KEY: mask(env.MASTER_ENCRYPTION_KEY),
+      NODE_ENV: env.NODE_ENV || "NOT SET",
+    });
+  });
+
+  // ── Temporary test send endpoint (remove after hackathon) ──
+  app.get("/debug/test-send", async (req, reply) => {
+    try {
+      const to = (req.query as any).to;
+      if (!to) return reply.send({ error: "?to=+91XXXXXXXXXX required" });
+      await sendWhatsAppMessage(to, "✅ Monad Pay debug test — Railway is working!");
+      return reply.send({ ok: true, sentTo: to, from: env.TWILIO_WHATSAPP_NUMBER });
+    } catch (error: any) {
+      return reply.send({
+        ok: false,
+        error: error.message,
+        code: error.code,
+        status: error.status,
+        moreInfo: error.moreInfo,
       });
     }
   });
