@@ -253,18 +253,35 @@ All commands work with **natural language** — no strict syntax required.
 
 ---
 
-## ☁️ Deployment (Railway)
+## ☁️ Live Deployment
 
-The project is configured for one-click Railway deployment:
+> **Monad Pay is deployed and running 24/7 on Railway.**
+
+| | |
+|---|---|
+| **Live URL** | `https://chatpayapi-production.up.railway.app` |
+| **Health Check** | [`/health`](https://chatpayapi-production.up.railway.app/health) — returns `{"status":"ok"}` |
+| **Platform** | [Railway](https://railway.app) (Nixpacks builder) |
+| **Region** | Europe West (auto-scaled) |
+| **CDN** | Fastly edge network |
+| **WhatsApp Webhook** | `https://chatpayapi-production.up.railway.app/webhooks/whatsapp` |
+
+### Deployment Proof
+
+The API server is live and verified. See [`docs/DEPLOYMENT_PROOF.md`](docs/DEPLOYMENT_PROOF.md) for full evidence including:
+- Health check response with Railway edge headers
+- On-chain transaction hashes on Monad explorer
+- Smart contract deployment address
+- Live WhatsApp bot interaction proof
+
+### Self-Deploy
+
+To deploy your own instance:
 
 1. Connect your GitHub repo on [railway.app](https://railway.app)
-2. Add environment variables (see `RAILWAY_SETUP.md` for the complete list)
+2. Add environment variables (see `RAILWAY_SETUP.md` locally for full list)
 3. Railway auto-builds and deploys using `railway.json`
 4. Update Twilio webhook to your Railway URL
-
-```
-https://<your-app>.up.railway.app/webhooks/whatsapp
-```
 
 ---
 
