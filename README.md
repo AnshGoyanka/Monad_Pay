@@ -280,12 +280,6 @@ https://<your-app>.up.railway.app/webhooks/whatsapp
 
 ---
 
-## 📄 License
-
-MIT
-
----
-
 <p align="center">
   Built for the <strong>Monad Blitz Hackathon</strong> 🟣⚡
 </p>
