@@ -9,7 +9,7 @@ const envSchema = z.object({
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace"]).default("info"),
 
   // Database
-  DATABASE_URL: z.string().url(),
+  DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
 
   // Redis
   REDIS_URL: z.string().default("redis://localhost:6379"),
